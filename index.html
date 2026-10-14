@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desa Kamanre - Kab. Luwu</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-50 text-gray-800 transition-colors duration-200">
+
+    <!-- TOP HEADER / ACCESSABILITY BAR -->
+    <div
+        class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center border-b border-emerald-800">
+        <div class="flex items-center space-x-3">
+            <span><i class="fas fa-map-marker-alt text-amber-400 mr-1"></i> Kec. Kamanre, Kab. Luwu, Sulawesi
+                Selatan</span>
+            <span class="hidden md:inline">|</span>
+            <span class="hidden md:inline"><i class="fas fa-clock mr-1"></i> Jam Layanan: Senin - Jumat (08:00 - 15:00
+                WITA)</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- Text Resizer -->
+            <div class="flex items-center bg-emerald-950/60 rounded px-2 py-0.5 space-x-1">
+                <span class="text-[10px] uppercase font-semibold mr-1 text-emerald-300">Teks:</span>
+                <button onclick="changeFontSize('small')" class="px-1.5 hover:text-amber-300 font-bold">A-</button>
+                <button onclick="changeFontSize('normal')" class="px-1.5 hover:text-amber-300 font-bold">Reset</button>
+                <button onclick="changeFontSize('large')" class="px-1.5 hover:text-amber-300 font-bold">A+</button>
+            </div>
+            <!-- Theme Switcher -->
+            <button id="themeToggle"
+                class="bg-emerald-950/60 hover:bg-amber-500 hover:text-slate-900 px-2 py-0.5 rounded flex items-center gap-1 transition">
+                <i class="fas font-solid fa-moon"></i>
+                <span id="themeLabel" class="hidden sm:inline">Gelap</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- NAVBAR MAIN -->
+    <nav
+        class="sticky top-0 z-40 bg-white/95 dark:bg-gray-900/95 backdrop-blur border-b border-gray-200 dark:border-gray-800 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#hero" class="flex items-center gap-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-emerald-700 flex items-center justify-center text-white font-bold shadow-md">
+                            <i class="fas fa-mountain text-amber-400 text-lg"></i>
+                        </div>
+                        <div>
+                            <span
+                                class="text-xl font-bold tracking-tight text-emerald-800 dark:text-emerald-400 block leading-none">DESA
+                                KAMANRE</span>
+                            <span
+                                class="text-[10px] text-gray-500 dark:text-gray-400 font-semibold tracking-wider uppercase">Kec.
+                                Kamanre, Kab. Luwu</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Desktop Nav -->
+                <div class="hidden lg:flex items-center space-x-1">
+                    <a href="#hero"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Beranda</a>
+                    <a href="#profil"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Profil
+                        & Statistik</a>
+                    <a href="#berita"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Berita
+                        & Kondisi</a>
+                    <a href="#aspirasi"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Pengaduan
+                        & Kebijakan</a>
+                    <a href="#potensi"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Potensi
+                        Desa</a>
+                    <a href="#kontak"
+                        class="px-3 py-2 text-sm font-medium hover:text-emerald-600 dark:hover:text-emerald-400 transition">Kontak</a>
+
+                    <div class="pl-2 border-l border-gray-200 dark:border-gray-700 ml-2">
+                        <button id="adminBtnToggle" onclick="toggleAdminAuth()"
+                            class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold text-xs px-3 py-1.5 rounded-full shadow transition flex items-center gap-1.5">
+                            <i class="fas fa-lock text-xs"></i>
+                            <span id="adminBtnText">Login Admin</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex items-center lg:hidden">
+                    <button onclick="toggleMobileMenu()"
+                        class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobileMenu"
+            class="hidden lg:hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-4 pt-2 pb-4 space-y-1">
+            <a href="#hero" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Beranda</a>
+            <a href="#profil" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Profil
+                & Statistik</a>
+            <a href="#berita" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Berita
+                & Kondisi</a>
+            <a href="#aspirasi" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Pengaduan
+                & Kebijakan</a>
+            <a href="#potensi" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Potensi
+                Desa</a>
+            <a href="#kontak" onclick="toggleMobileMenu()"
+                class="block px-3 py-2 rounded-md text-base font-medium hover:bg-emerald-50 dark:hover:bg-gray-800">Kontak</a>
+            <div class="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <button onclick="toggleAdminAuth(); toggleMobileMenu();"
+                    class="w-full bg-amber-500 text-slate-900 font-semibold px-3 py-2 rounded-md text-sm">
+                    <i class="fas fa-lock mr-1"></i> Mode Admin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ADMIN INDICATOR BANNER (Visible when logged in as admin) -->
+    <div id="adminBadgeBanner"
+        class="hidden bg-amber-500 text-slate-900 px-4 py-2 font-bold text-xs sm:text-sm flex justify-between items-center shadow-inner">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-user-shield text-base"></i>
+            <span>Anda sedang berada dalam <strong>MODE ADMIN DESA KAMANRE</strong> (Akses Kelola Berita & Keluhan
+                Warga)</span>
+        </div>
+        <button onclick="logoutAdmin()"
+            class="bg-slate-900 text-white text-xs px-2.5 py-1 rounded hover:bg-slate-800 transition">
+            Keluar Admin
+        </button>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative bg-emerald-900 text-white py-20 lg:py-28 overflow-hidden">
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80')] bg-cover bg-center opacity-20">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-900/90 to-transparent"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl">
+                <span
+                    class="inline-block bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-4">
+                    Selamat Datang Di Portal Resmi
+                </span>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    Pemerintah Desa Kamanre <br><span class="text-amber-400">Kabupaten Luwu</span>
+                </h1>
+                <p class="text-base sm:text-lg text-emerald-100 mb-8 leading-relaxed">
+                    Pusat Informasi Terpadu, Layanan Pengaduan Masyarakat, Diskusi Kebijakan Publik, serta Transparansi
+                    Pembangunan Desa Kamanre.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#aspirasi"
+                        class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Buat Pengaduan / Masukan
+                    </a>
+                    <a href="#berita"
+                        class="bg-emerald-800 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-lg border border-emerald-600 shadow transition flex items-center gap-2">
+                        <i class="fas fa-newspaper"></i> Berita Desa Terbaru
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN MANAGEMENT PANEL (Visible only to Admin) -->
+    <section id="adminPanelSection" class="hidden py-10 bg-amber-50 dark:bg-slate-900/90 border-b-2 border-amber-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-amber-400 flex items-center gap-2">
+                        <i class="fas fa-tools text-amber-500"></i> Panel Manajemen Admin Desa
+                    </h2>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">Kelola artikel berita kondisi desa dan respon
+                        masukan/keluhan dari warga.</p>
+                </div>
+                <span
+                    class="bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-amber-300">
+                    Admin Active
+                </span>
+            </div>
+
+            <!-- Admin Tabs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Form Post Berita Baru -->
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-amber-200 dark:border-gray-700">
+                    <h3
+                        class="text-lg font-bold mb-4 text-emerald-800 dark:text-emerald-400 flex items-center gap-2 border-b pb-2">
+                        <i class="fas fa-plus-circle"></i> Tulis / Upload Berita Kondisi Desa
+                    </h3>
+                    <form id="adminBeritaForm" onsubmit="handleCreateBerita(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Judul Artikel / Berita</label>
+                            <input type="text" id="beritaTitle" required
+                                placeholder="Contoh: Perbaikan Saluran Irigasi Dsn. Kamanre"
+                                class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-emerald-600">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Kategori</label>
+                                <select id="beritaCategory"
+                                    class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                    <text>Kondisi Desa</text>
+                                    <option value="Infrastruktur">Infrastruktur</option>
+                                    <option value="Pertanian">Pertanian</option>
+                                    <option value="Kegiatan Warga">Kegiatan Warga</option>
+                                    <option value="Pengumuman">Pengumuman</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold mb-1">Upload Foto Sampul</label>
+                                <input type="file" id="beritaImageInput" accept="image/*"
+                                    class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Isi Berita / Laporan Kondisi</label>
+                            <textarea id="beritaContent" rows="4" required
+                                placeholder="Tuliskan detail kondisi atau informasi desa di sini..."
+                                class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-emerald-600"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2 rounded text-sm transition">
+                            <i class="fas fa-paper-plane mr-1"></i> Terbitkan Artikel Berita
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Ringkasan Keluhan Masuk -->
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-amber-200 dark:border-gray-700 flex flex-col justify-between">
+                    <div>
+                        <h3
+                            class="text-lg font-bold mb-4 text-emerald-800 dark:text-emerald-400 flex items-center justify-between border-b pb-2">
+                            <span><i class="fas fa-tasks"></i> Ringkasan Keluhan Warga</span>
+                            <span id="adminPendingBadge"
+                                class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0 Belum Selesai</span>
+                        </h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                            Gunakan panel ini untuk memantau pengaduan masyarakat Desa Kamanre. Anda dapat mengubah
+                            status pengaduan langsung di daftar pengaduan warga di bawah.
+                        </p>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded">
+                                <span>Total Pengaduan Masuk:</span>
+                                <span id="statTotalComplaints" class="font-bold">0</span>
+                            </div>
+                            <div
+                                class="flex justify-between p-2 bg-amber-50 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300 rounded">
+                                <span>Status Diproses:</span>
+                                <span id="statProcessComplaints" class="font-bold">0</span>
+                            </div>
+                            <div
+                                class="flex justify-between p-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300 rounded">
+                                <span>Status Selesai:</span>
+                                <span id="statDoneComplaints" class="font-bold">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <a href="#aspirasi"
+                            class="block text-center text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline">
+                            Kelola Pengaduan Langsung Di Section Pengaduan &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFIL DESA & STATISTIK -->
+    <section id="profil" class="py-16 bg-white dark:bg-gray-900 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Profil & Demografi Desa Kamanre</h2>
+                <div class="w-16 h-1 bg-amber-500 mx-auto my-3 rounded"></div>
+                <p class="text-gray-600 dark:text-gray-300 text-sm sm:text-base">
+                    Mengenal Desa Kamanre di Kecamatan Kamanre, Kabupaten Luwu. Wilayah yang kaya akan potensi
+                    pertanian, perkebunan kakao, serta semangat gotong royong warga.
+                </p>
+            </div>
+
+            <!-- Visi & Misi Cards -->
+            <div class="grid md:grid-cols-2 gap-6 mb-12">
+                <div class="bg-emerald-50 dark:bg-gray-800 p-6 rounded-xl border-l-4 border-emerald-600 shadow-sm">
+                    <h3 class="text-xl font-bold text-emerald-900 dark:text-emerald-400 mb-2 flex items-center gap-2">
+                        <i class="fas fa-eye"></i> Visi Desa
+                    </h3>
+                    <p class="text-gray-700 dark:text-gray-300 italic text-sm sm:text-base leading-relaxed">
+                        "Terwujudnya Desa Kamanre yang Mandiri, Sejahtera, Transparan, dan Berdaya Saing Berbasis
+                        Potensi Lokal dan Nilai-Nilai Keagamaan."
+                    </p>
+                </div>
+                <div class="bg-amber-50 dark:bg-gray-800 p-6 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                    <h3 class="text-xl font-bold text-amber-900 dark:text-amber-400 mb-2 flex items-center gap-2">
+                        <i class="fas fa-bullseye"></i> Misi Utama
+                    </h3>
+                    <ul class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm space-y-1.5 list-disc list-inside">
+                        <li>Mewujudkan tata kelola pemerintahan desa yang bersih, jujur, dan transparan.</li>
+                        <li>Meningkatkan kualitas sarana pertanian, irigasi, dan infrastruktur desa.</li>
+                        <li>Mendorong pemberdayaan UMKM dan hasil olahan komoditas lokal.</li>
+                        <li>Mengoptimalkan pelayanan publik berbasis digital dan responsif.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Statistik Demografi Charts -->
+            <div
+                class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl shadow-inner border border-gray-200 dark:border-gray-700">
+                <h3
+                    class="text-lg font-bold text-gray-800 dark:text-white mb-6 text-center flex items-center justify-center gap-2">
+                    <i class="fas fa-chart-pie text-emerald-600"></i> Statistik Penduduk & Pekerjaan
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="h-64 relative">
+                        <canvas id="chartPekerjaan"></canvas>
+                    </div>
+                    <div class="h-64 relative">
+                        <canvas id="chartPenduduk"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION BERITA & KONDISI DESA -->
+    <section id="berita" class="py-16 bg-gray-100 dark:bg-gray-800/50 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+                <div>
+                    <span class="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase tracking-wider">Kondisi
+                        & Informasi Terkini</span>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-1">Berita & Kabar Desa Kamanre</h2>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2 md:mt-0">
+                    *Admin desa dapat menerbitkan artikel baru melalui Panel Admin.
+                </p>
+            </div>
+
+            <!-- Grid Artikel Berita -->
+            <div id="beritaContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION MASUKAN, PENGADUAN & KOMENTAR KEBIJAKAN -->
+    <section id="aspirasi" class="py-16 bg-white dark:bg-gray-900 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span
+                    class="bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full uppercase">
+                    Ruang Partisipasi Warga
+                </span>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-2">Pengaduan, Masukan & Diskusi Kebijakan
+                </h2>
+                <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mt-2">
+                    Sampaikan keluhan kondisi desa, saran pembangunan, atau berikan komentar pada kebijakan publik Desa
+                    Kamanre secara terbuka.
+                </p>
+            </div>
+
+            <!-- Main Layout: Form Pengaduan & Daftar Diskusi Kebijakan -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <!-- Left: Form Input Keluhan/Masukan (Col 5) -->
+                <div
+                    class="lg:col-span-5 bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm h-fit">
+                    <h3 class="text-xl font-bold text-emerald-800 dark:text-emerald-400 mb-4 flex items-center gap-2">
+                        <i class="fas fa-edit"></i> Form Keluhan & Masukan
+                    </h3>
+                    <form id="complaintForm" onsubmit="handleNewComplaint(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Nama Lengkap / Inisial</label>
+                            <input type="text" id="compName" required placeholder="Contoh: Ahmad (Dusun Kamanre)"
+                                class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-emerald-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Kategori Masukan / Pengaduan</label>
+                            <select id="compCategory"
+                                class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                <option value="Jalan & Infrastruktur">Jalan & Infrastruktur</option>
+                                <option value="Irigasi & Pertanian">Irigasi & Pertanian</option>
+                                <option value="Kebersihan & Sampah">Kebersihan & Sampah</option>
+                                <option value="Pelayanan Desa">Pelayanan Desa</option>
+                                <option value="Lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Rincian Masukan / Pengaduan</label>
+                            <textarea id="compDetail" rows="4" required
+                                placeholder="Jelaskan detail keluhan, lokasi kejadian, atau saran perbaikan..."
+                                class="w-full px-3 py-2 text-sm rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700 focus:outline-emerald-600"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold mb-1">Lampirkan Foto Bukti (Opsional)</label>
+                            <input type="file" id="compImage" accept="image/*"
+                                class="w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:bg-emerald-100 file:text-emerald-700">
+                        </div>
+                        <button type="submit"
+                            class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded text-sm transition flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Kirim Masukan Ke Desa
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right: Daftar Pengaduan Masuk + Status & Komentar Kebijakan (Col 7) -->
+                <div class="lg:col-span-7 space-y-8">
+
+                    <!-- Tab Box Pengaduan & Kebijakan -->
+                    <div
+                        class="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+
+                        <div
+                            class="flex flex-wrap justify-between items-center border-b border-gray-200 dark:border-gray-700 pb-3 mb-4 gap-2">
+                            <h3 class="text-xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                <i class="fas fa-list-check text-amber-500"></i> Status Pengaduan Warga
+                            </h3>
+                            <!-- Filter status -->
+                            <select id="filterStatus" onchange="renderComplaints()"
+                                class="text-xs bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1">
+                                <option value="ALL">Semua Status</option>
+                                <option value="Terkirim">Terkirim</option>
+                                <option value="Diproses">Diproses</option>
+                                <option value="Selesai">Selesai</option>
+                            </select>
+                        </div>
+
+                        <!-- List Pengaduan Warga -->
+                        <div id="complaintsList" class="space-y-4 max-h-[450px] overflow-y-auto pr-1">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Forum Komentar / Ulasan Kebijakan Desa -->
+                    <div
+                        class="bg-emerald-50/50 dark:bg-gray-800/80 p-6 rounded-xl border border-emerald-200 dark:border-gray-700">
+                        <h3
+                            class="text-lg font-bold text-emerald-900 dark:text-emerald-400 mb-2 flex items-center gap-2">
+                            <i class="fas fa-comments"></i> Forum Komentar Kebijakan Desa Kamanre
+                        </h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">
+                            Kebijakan Aktif saat ini: <strong>"Rencana Alokasi Dana Desa Untuk Digitalisasi & Perbaikan
+                                Irigasi Sawah Kamanre Tahun Ini"</strong>
+                        </p>
+
+                        <!-- Form Tambah Komentar Kebijakan -->
+                        <form id="policyCommentForm" onsubmit="handlePolicyComment(event)" class="mb-6 space-y-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                <input type="text" id="policyName" placeholder="Nama Anda" required
+                                    class="px-3 py-1.5 text-xs rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                <select id="policyStance"
+                                    class="px-3 py-1.5 text-xs rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                                    <option value="Sangat Setuju">👍 Sangat Setuju</option>
+                                    <option value="Setuju Dengan Catatan">💬 Setuju Dengan Catatan</option>
+                                    <option value="Perlu Evaluasi">⚠️ Perlu Evaluasi</option>
+                                </select>
+                            </div>
+                            <textarea id="policyText" rows="2"
+                                placeholder="Tuliskan pandangan Anda terkait kebijakan ini..." required
+                                class="w-full px-3 py-1.5 text-xs rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700"></textarea>
+                            <button type="submit"
+                                class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-4 py-1.5 rounded text-xs transition">
+                                Kirim Komentar Kebijakan
+                            </button>
+                        </form>
+
+                        <!-- List Komentar Kebijakan -->
+                        <div id="policyCommentsList" class="space-y-3 max-h-60 overflow-y-auto">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- POTENSI DESA -->
+    <section id="potensi" class="py-16 bg-gray-100 dark:bg-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Potensi Utama Desa Kamanre</h2>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2">Kekayaan alam, hasil perkebunan
+                    kakao, pertanian padi, serta sektor ekonomi lokal Kabupaten Luwu.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow border border-gray-200 dark:border-gray-700">
+                    <img src="https://images.unsplash.com/photo-1599580420422-92167d4f7a1f?auto=format&fit=crop&w=600&q=80"
+                        alt="Kakao" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-emerald-800 dark:text-emerald-400">Perkebunan Kakao</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mt-2">
+                            Kamanre dikenal sebagai salah satu penghasil biji kakao berkualitas tinggi di Luwu.
+                            Pemerintah desa mendukung produktivitas petani kakao lokal.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow border border-gray-200 dark:border-gray-700">
+                    <img src="https://images.unsplash.com/photo-1530507629858-e4977d30e9e0?auto=format&fit=crop&w=600&q=80"
+                        alt="Pertanian" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-emerald-800 dark:text-emerald-400">Pertanian Padi & Irigasi
+                        </h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mt-2">
+                            Lahan persawahan yang subur didukung oleh perbaikan sistem saluran irigasi teknis untuk
+                            menjaga ketahanan pangan desa.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow border border-gray-200 dark:border-gray-700">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80"
+                        alt="UMKM" class="w-full h-40 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-emerald-800 dark:text-emerald-400">UMKM & Olahan Hasil Tani
+                        </h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-300 mt-2">
+                            Kelompok usaha ibu-ibu tani memproduksi makanan olahan tradisional serta produk kerajinan
+                            tangan khas daerah Luwu.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTAK & PETA LOKASI -->
+    <section id="kontak" class="py-16 bg-white dark:bg-gray-900 transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Kantor Desa Kamanre</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-6">
+                        Silakan hubungi atau kunjungi Kantor Desa Kamanre untuk keperluan administrasi, pengurusan
+                        surat, dan informasi resmi.
+                    </p>
+
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-8 h-8 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-900 dark:text-white">Alamat Kantor:</strong>
+                                <span class="text-gray-600 dark:text-gray-300 text-xs">Jl. Poros Luwu - Belopa, Kec.
+                                    Kamanre, Kab. Luwu, Sulawesi Selatan 91994</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-8 h-8 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <strong class="block text-gray-900 dark:text-white">Email & Telepon:</strong>
+                                <span class="text-gray-600 dark:text-gray-300 text-xs">kontak@desakamanre.luwukab.go.id
+                                    | +62 852-XXXX-XXXX</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Map Embed Placeholder -->
+                <div
+                    class="bg-gray-200 dark:bg-gray-800 h-64 rounded-xl overflow-hidden shadow border border-gray-300 dark:border-gray-700 relative flex items-center justify-center text-center p-4">
+                    <iframe title="Peta Kamanre Luwu"
+                        src="https://maps.google.com/maps?q=Kamanre,Luwu,Sulawesi%20Selatan&t=&z=12&ie=UTF8&iwloc=&output=embed"
+                        class="w-full h-full border-0 absolute inset-0 opacity-90"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950 text-emerald-200 py-8 border-t border-emerald-900">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-2">
+            <p class="font-semibold text-white">© 2026 Pemerintah Desa Kamanre, Kecamatan Kamanre, Kabupaten Luwu.</p>
+            <p class="text-emerald-400/80">Website Resmi Profil Desa, Layanan Pengaduan Warga & Diskusi Transparansi
+                Kebijakan.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL READ FULL ARTICLE BERITA -->
+    <div id="beritaModal"
+        class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div
+            class="bg-white dark:bg-gray-800 max-w-2xl w-full rounded-xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 max-h-[90vh] flex flex-col">
+            <div class="p-4 bg-emerald-800 text-white flex justify-between items-center">
+                <h3 id="modalTitle" class="font-bold text-lg">Judul Berita</h3>
+                <button onclick="closeBeritaModal()"
+                    class="text-white hover:text-amber-300 text-xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4">
+                <img id="modalImg" src="" alt="" class="w-full h-56 object-cover rounded">
+                <div id="modalMeta" class="text-xs text-gray-500 dark:text-gray-400"></div>
+                <div id="modalContent"
+                    class="text-sm leading-relaxed text-gray-700 dark:text-gray-300 whitespace-pre-line"></div>
+            </div>
+            <div class="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+                <button onclick="closeBeritaModal()"
+                    class="bg-gray-500 text-white px-4 py-1.5 rounded text-xs">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="adminModal"
+        class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white dark:bg-gray-800 max-w-md w-full rounded-xl p-6 shadow-2xl border border-amber-400">
+            <div class="text-center mb-4">
+                <div
+                    class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <i class="fas fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Akses Admin Desa Kamanre</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Masukkan PIN Admin untuk masuk ke mode kelola berita
+                    & respon keluhan.</p>
+            </div>
+            <form onsubmit="submitAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold mb-1">PIN Admin (Default: 1234)</label>
+                    <input type="password" id="adminPinInput" required placeholder="Masukkan PIN 1234"
+                        class="w-full px-3 py-2 text-center text-lg tracking-widest rounded border border-gray-300 dark:border-gray-600 dark:bg-gray-700">
+                </div>
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminModal()"
+                        class="w-1/2 bg-gray-300 dark:bg-gray-600 text-gray-800 dark:text-white py-2 rounded text-xs font-bold">Batal</button>
+                    <button type="submit"
+                        class="w-1/2 bg-amber-500 hover:bg-amber-600 text-slate-900 py-2 rounded text-xs font-bold">Verifikasi
+                        PIN</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript File -->
+    <script src="app.js"></script>
+</body>
+
+</html>
